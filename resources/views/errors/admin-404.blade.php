@@ -1,0 +1,3 @@
+@extends('layouts.admin') @section('title','Admin Page Not Found') @section('page-title','404 · Admin') @section('content')
+<div class="ad-empty-state ad-404"><div class="ad-404-orb">404</div><span class="ad-eyebrow">Navigation mismatch</span><h2>This admin workspace does not exist.</h2><p>The link may be outdated, renamed, or outside your current Trendora build.</p><div class="d-flex gap-2 justify-content-center flex-wrap"><a class="btn btn-primary" href="{{ route('admin.dashboard') }}"><i class="fa-solid fa-house me-2"></i>Dashboard</a><a class="btn btn-outline-light" href="{{ route('admin.operations.system') }}"><i class="fa-solid fa-heart-pulse me-2"></i>System status</a></div></div>
+@endsection

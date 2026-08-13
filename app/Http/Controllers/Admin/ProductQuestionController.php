@@ -1,0 +1,4 @@
+<?php
+namespace App\Http\Controllers\Admin;use App\Http\Controllers\Controller;use App\Models\ProductQuestion;use Illuminate\Http\Request;
+class ProductQuestionController extends Controller{public function index(Request $r){$q=ProductQuestion::with(['product','user','answeredBy'])->latest();if($r->filled('status'))$q->where('status',$r->status);return view('admin.questions.index',['questions'=>$q->paginate(20)->withQueryString()]);}public function answer(Request $r,ProductQuestion $question){$d=$r->validate(['answer'=>'required|string|max:5000','status'=>'required|in:published,hidden']);$question->update(['answer'=>$d['answer'],'status'=>$d['status'],'answered_by'=>auth()->id(),'answered_at'=>now()]);return back()->with('success','Product question answered.');}public function destroy(ProductQuestion $question){$question->delete();return back()->with('success','Question removed.');}}
+

@@ -1,0 +1,9 @@
+<?php
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;use App\Models\Order;use App\Models\Product;use App\Models\Inventory;use App\Models\SupportTicket;use App\Models\ReturnRequest;use Illuminate\Support\Facades\DB;use Illuminate\Support\Facades\Cache;use Illuminate\Support\Facades\Schema;
+class OperationsController extends Controller {
+ public function live(){ $metrics=['orders_today'=>Order::whereDate('created_at',today())->count(),'revenue_today'=>Order::whereDate('created_at',today())->where('payment_status','paid')->sum('total'),'low_stock'=>Schema::hasTable('inventories')?Inventory::whereColumn('quantity','<=','reorder_level')->count():Product::where('stock_quantity','<=',10)->count(),'open_tickets'=>SupportTicket::whereNotIn('status',['resolved','closed'])->count(),'pending_returns'=>ReturnRequest::where('status','pending')->count()];$orders=Order::with('user')->latest()->take(12)->get();return view('admin.operations.live',compact('metrics','orders'));}
+ public function system(){ $checks=[['name'=>'Application','value'=>app()->environment(),'ok'=>true],['name'=>'PHP','value'=>PHP_VERSION,'ok'=>version_compare(PHP_VERSION,'8.2','>=')],['name'=>'Database','value'=>$this->db(),'ok'=>$this->db()!=='Offline'],['name'=>'Cache','value'=>$this->cache(),'ok'=>$this->cache()==='Operational'],['name'=>'Storage link','value'=>is_link(public_path('storage'))?'Linked':'Not linked','ok'=>is_link(public_path('storage'))],['name'=>'Debug mode','value'=>config('app.debug')?'Enabled':'Disabled','ok'=>!config('app.debug')]];return view('admin.operations.system',compact('checks'));}
+ private function db(){try{DB::connection()->getPdo();return DB::connection()->getDatabaseName()?:'Connected';}catch(\Throwable $e){return 'Offline';}}
+ private function cache(){try{Cache::put('trendora_health','ok',5);return Cache::get('trendora_health')==='ok'?'Operational':'Issue';}catch(\Throwable $e){return 'Issue';}}
+}

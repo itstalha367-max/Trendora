@@ -1,0 +1,453 @@
+/*
+ * Trendora × AstraCommerce — Final visual system
+ * Design source: initial AstraCommerce Pro UI kit.
+ * Loaded LAST so legacy page styles keep structure but never leak the old visual language.
+ */
+:root{
+  --ac-bg:#090b10;--ac-bg-2:#0d1119;--ac-card:#111722;--ac-card-2:#151d2a;
+  --ac-line:rgba(255,255,255,.08);--ac-line-strong:rgba(255,255,255,.13);
+  --ac-text:#f8fafc;--ac-muted:#93a1b4;--ac-primary:#8b5cf6;--ac-primary-2:#5b7cff;--ac-cyan:#22d3ee;
+  --ac-success:#10b981;--ac-warning:#f59e0b;--ac-danger:#ef4444;
+  --ac-shadow:0 30px 80px rgba(0,0,0,.35);--ac-shadow-soft:0 18px 52px rgba(0,0,0,.20);
+  --ac-radius:22px;--ac-radius-sm:14px;--ac-ease:cubic-bezier(.2,.8,.2,1);
+  --tr-bg:var(--ac-bg);--tr-bg-2:var(--ac-bg-2);--tr-surface:var(--ac-card);--tr-surface-2:var(--ac-card-2);
+  --tr-line:var(--ac-line);--tr-text:var(--ac-text);--tr-muted:var(--ac-muted);--tr-primary:var(--ac-primary);--tr-primary-2:var(--ac-primary-2);--tr-cyan:var(--ac-cyan);--tr-radius:var(--ac-radius);--tr-ease:var(--ac-ease);
+  --ad-bg:var(--ac-bg);--ad-bg-2:var(--ac-bg-2);--ad-panel:var(--ac-card);--ad-panel-2:var(--ac-card-2);--ad-line:var(--ac-line);--ad-text:var(--ac-text);--ad-muted:var(--ac-muted);--ad-primary:var(--ac-primary);--ad-primary-2:var(--ac-primary-2);--ad-cyan:var(--ac-cyan);--ad-radius:var(--ac-radius);
+}
+html{scroll-behavior:smooth;color-scheme:dark}
+body.trendora-store,body.trendora-admin,body.trendora-auth,body.astra-commerce{
+  margin:0;color:var(--ac-text)!important;background:
+    radial-gradient(circle at 15% 10%,rgba(139,92,246,.12),transparent 26%),
+    radial-gradient(circle at 85% 0%,rgba(34,211,238,.08),transparent 22%),
+    linear-gradient(180deg,#080a0f,#0a0d13 55%,#07090d)!important;
+  background-attachment:fixed;min-height:100vh;overflow-x:hidden;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+body.trendora-store::before,body.trendora-admin::before,body.trendora-auth::before,body.astra-commerce::before{
+  content:"";position:fixed;z-index:-2;inset:0;pointer-events:none;opacity:.8;
+  background:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);background-size:46px 46px;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.6),transparent 80%);
+}
+body.trendora-store::after,body.trendora-admin::after,body.trendora-auth::after,body.astra-commerce::after{
+  content:"";position:fixed;z-index:-1;width:520px;height:520px;border-radius:50%;right:-220px;top:8vh;pointer-events:none;
+  background:radial-gradient(circle,rgba(91,124,255,.12),transparent 66%);filter:blur(10px);animation:acAmbient 10s ease-in-out infinite alternate;
+}
+@keyframes acAmbient{to{transform:translate(-60px,45px) scale(1.08)}}
+::selection{background:rgba(139,92,246,.35);color:#fff}
+.trendora-store a,.trendora-admin a,.trendora-auth a{color:inherit;text-decoration:none}
+.trendora-store img,.trendora-admin img,.trendora-auth img{max-width:100%}
+.trendora-store h1,.trendora-store h2,.trendora-store h3,.trendora-store h4,.trendora-store h5,.trendora-store h6,
+.trendora-admin h1,.trendora-admin h2,.trendora-admin h3,.trendora-admin h4,.trendora-admin h5,.trendora-admin h6,
+.trendora-auth h1,.trendora-auth h2,.trendora-auth h3{color:#fff;letter-spacing:-.025em}
+.trendora-store .text-muted,.trendora-admin .text-muted,.trendora-auth .text-muted,.trendora-store .muted,.trendora-admin .muted{color:var(--ac-muted)!important}
+.trendora-store .text-dark,.trendora-admin .text-dark{color:var(--ac-text)!important}.trendora-store .text-black,.trendora-admin .text-black{color:#fff!important}
+.trendora-store .bg-white,.trendora-admin .bg-white,.trendora-store .bg-light,.trendora-admin .bg-light{background:rgba(255,255,255,.035)!important;color:var(--ac-text)!important}
+.trendora-store hr,.trendora-admin hr{border-color:var(--ac-line)!important;opacity:1}
+
+/* Motion language from the initial UI kit */
+.trendora-store .card,.trendora-admin .card,.trendora-store .tr-card,.trendora-admin .ad-card,
+.trendora-store .filter-sidebar,.trendora-store .product-grid-card,.trendora-store .product-card,
+.trendora-admin .ad-stat,.trendora-admin .ad-report-card,.trendora-admin .ad-toggle-card,
+.trendora-store .account-card,.trendora-store .checkout-card,.trendora-store .summary-card{
+  animation:acPageIn .45s var(--ac-ease) both;
+}
+@keyframes acPageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes acRise{from{transform:scaleY(.08);opacity:.15}to{transform:scaleY(1);opacity:1}}
+
+/* ========================================================================== */
+/* Storefront shell                                                            */
+/* ========================================================================== */
+.tr-topline{border-bottom:1px solid var(--ac-line)!important;background:rgba(8,10,15,.72)!important;color:#748399!important;backdrop-filter:blur(18px)}
+.tr-topline .tr-shell{min-height:31px}.tr-pulse{background:var(--ac-success)!important;box-shadow:0 0 0 5px rgba(16,185,129,.08)!important}
+.tr-navbar{position:sticky!important;top:0;z-index:1025;border-bottom:1px solid var(--ac-line)!important;background:rgba(9,11,16,.72)!important;backdrop-filter:blur(22px)!important;box-shadow:0 12px 45px rgba(0,0,0,.14)!important}
+.tr-navbar .navbar{padding-block:12px!important}.tr-shell{width:min(1460px,calc(100% - 36px))!important;max-width:1460px!important}
+.tr-brand{display:inline-flex!important;align-items:center!important;gap:11px!important;color:#fff!important;font-weight:900!important;letter-spacing:-.035em!important}.tr-brand em{color:var(--ac-cyan)!important;font-style:normal!important}
+.tr-logo{width:42px!important;height:42px!important;border-radius:14px!important;display:grid!important;place-items:center!important;color:#fff!important;background:linear-gradient(135deg,var(--ac-primary),var(--ac-cyan))!important;box-shadow:0 12px 30px rgba(139,92,246,.28)!important;border:0!important}
+.tr-navlink{position:relative;color:#aeb9c7!important;border-radius:11px!important;padding:9px 11px!important;font-weight:650!important;font-size:13px!important;transition:.25s!important}
+.tr-navlink:hover,.tr-navlink.active{color:#fff!important;background:linear-gradient(90deg,rgba(139,92,246,.16),rgba(34,211,238,.04))!important;transform:translateY(-1px)}
+.tr-search{min-height:43px!important;min-width:260px!important;border:1px solid var(--ac-line)!important;background:rgba(255,255,255,.035)!important;border-radius:14px!important;color:var(--ac-muted)!important;box-shadow:none!important;transition:.25s!important}
+.tr-search:focus-within{border-color:rgba(139,92,246,.5)!important;box-shadow:0 0 0 4px rgba(139,92,246,.08)!important}.tr-search input{color:#fff!important}.tr-search input::placeholder{color:#66758a!important}.tr-kbd{border-color:var(--ac-line)!important;background:rgba(255,255,255,.02)!important;color:#7f8da0!important}
+.tr-action,.tr-auth-btn{border:1px solid var(--ac-line)!important;color:#fff!important;background:rgba(255,255,255,.045)!important;border-radius:13px!important;min-height:42px!important;transition:.25s var(--ac-ease)!important;box-shadow:none!important}
+.tr-action:hover,.tr-auth-btn:hover{transform:translateY(-2px)!important;background:rgba(255,255,255,.08)!important;border-color:rgba(139,92,246,.3)!important}.tr-auth-btn.primary{border:0!important;background:linear-gradient(135deg,var(--ac-primary),var(--ac-primary-2))!important;box-shadow:0 12px 30px rgba(91,124,255,.22)!important}
+.tr-badge{background:linear-gradient(135deg,var(--ac-primary),var(--ac-primary-2))!important;color:#fff!important;border:2px solid #0a0d13!important}
+.tr-main{min-height:55vh}.dropdown-menu{--bs-dropdown-bg:#0e141e!important;--bs-dropdown-border-color:var(--ac-line)!important;--bs-dropdown-link-color:#aeb9c7!important;--bs-dropdown-link-hover-color:#fff!important;--bs-dropdown-link-hover-bg:rgba(139,92,246,.12)!important;background:#0e141e!important;border:1px solid var(--ac-line)!important;border-radius:16px!important;box-shadow:var(--ac-shadow)!important;padding:8px!important}.dropdown-item{border-radius:10px!important;font-size:13px!important}.dropdown-divider{border-color:var(--ac-line)!important}
+
+/* Initial AstraCommerce hero + shared page heads */
+.tr-home-hero,.page-hero,.hero-section,.shop-header,.products-header,.checkout-header,.account-header,.profile-header,.wishlist-header,.cart-header,.order-success-header,.content-header,
+.trendora-store .tn-page-hero,.trendora-store .tr-page-hero{
+  position:relative!important;overflow:hidden!important;border:1px solid var(--ac-line)!important;border-radius:28px!important;
+  background:linear-gradient(135deg,rgba(139,92,246,.17),rgba(34,211,238,.06) 45%,rgba(255,255,255,.025))!important;box-shadow:var(--ac-shadow)!important;
+}
+.tr-home-hero::before,.page-hero::before,.shop-header::before,.products-header::before,.checkout-header::before,.account-header::before,.profile-header::before,.wishlist-header::before,.cart-header::before{
+  content:"";position:absolute!important;width:360px;height:360px;right:-95px;top:-155px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.38),transparent 65%);pointer-events:none;
+}
+.tr-home-hero{border-radius:0!important;border-inline:0!important;border-top:0!important;box-shadow:none!important;background:radial-gradient(circle at 80% 20%,rgba(91,124,255,.18),transparent 32%),linear-gradient(135deg,rgba(139,92,246,.12),rgba(34,211,238,.035) 48%,transparent)!important}
+.tr-hero-copy h1,.trendora-store .display-1,.trendora-store .display-2,.trendora-store .display-3{font-weight:900!important;letter-spacing:-.06em!important;line-height:.96!important;color:#fff!important}.tr-hero-copy p{color:#aab6c6!important}
+.tr-kicker,.tn-kicker,.eyebrow,.tr-eyebrow,.ad-eyebrow,.auth-eyebrow{font-size:11px!important;text-transform:uppercase!important;letter-spacing:.16em!important;color:#8ea0b6!important;font-weight:800!important}
+
+/* Cards — same glass surface used by the initial prototype */
+.trendora-store .card,.trendora-store .tr-card,.trendora-store .filter-sidebar,.trendora-store .product-grid-card,.trendora-store .product-card,.trendora-store .account-card,.trendora-store .summary-card,.trendora-store .checkout-card,.trendora-store .order-card,.trendora-store .address-card,.trendora-store .review-card,.trendora-store .support-card,.trendora-store .policy-card,.trendora-store .tn-card,.trendora-store .tn-panel,
+.trendora-admin .card,.trendora-admin .ad-card,.trendora-admin .ad-stat,.trendora-admin .ad-report-card,.trendora-admin .ad-toggle-card{
+  color:var(--ac-text)!important;border:1px solid var(--ac-line)!important;border-radius:var(--ac-radius)!important;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.025))!important;box-shadow:0 16px 45px rgba(0,0,0,.16)!important;backdrop-filter:blur(12px);
+}
+.trendora-store :is(.card,.tr-card,.product-grid-card,.product-card,.account-card,.address-card,.review-card,.support-card):hover,
+.trendora-admin :is(.card,.ad-card,.ad-stat,.ad-report-card):hover{border-color:rgba(139,92,246,.32)!important;box-shadow:0 24px 60px rgba(0,0,0,.26)!important}
+.trendora-store .card-header,.trendora-admin .card-header,.trendora-store .card-footer,.trendora-admin .card-footer{background:rgba(255,255,255,.025)!important;border-color:var(--ac-line)!important;color:#fff!important}
+.trendora-store .shadow,.trendora-store .shadow-sm,.trendora-admin .shadow,.trendora-admin .shadow-sm{box-shadow:var(--ac-shadow-soft)!important}
+
+/* Bootstrap controls re-skinned to Astra */
+.trendora-store .form-control,.trendora-store .form-select,.trendora-store textarea,.trendora-store input:not([type=checkbox]):not([type=radio]):not([type=range]),
+.trendora-admin .form-control,.trendora-admin .form-select,.trendora-admin textarea,.trendora-admin input:not([type=checkbox]):not([type=radio]):not([type=range]),
+.trendora-store .input,.trendora-store .select,.trendora-store .textarea,.trendora-admin .input,.trendora-admin .select,.trendora-admin .textarea{
+  border:1px solid var(--ac-line)!important;background:#0b1018!important;color:#eef2f7!important;border-radius:13px!important;box-shadow:none!important;min-height:43px;transition:.2s!important
+}
+.trendora-store .form-control::placeholder,.trendora-admin .form-control::placeholder,.trendora-store textarea::placeholder,.trendora-admin textarea::placeholder{color:#5e6c7f!important}
+.trendora-store :is(.form-control,.form-select,.input,.select,.textarea):focus,.trendora-admin :is(.form-control,.form-select,.input,.select,.textarea):focus{border-color:rgba(139,92,246,.55)!important;box-shadow:0 0 0 4px rgba(139,92,246,.08)!important;background:#0b1018!important;color:#fff!important}
+.trendora-store .form-select,.trendora-admin .form-select{--bs-form-select-bg-img:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2393a1b4' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e")!important}.trendora-store option,.trendora-admin option{background:#0b1018!important;color:#fff!important}
+.trendora-store .form-label,.trendora-admin .form-label,.trendora-store label,.trendora-admin label{color:#9aa8ba}.trendora-store .form-text,.trendora-admin .form-text{color:#718096!important}.trendora-store .input-group-text,.trendora-admin .input-group-text{background:#0b1018!important;border-color:var(--ac-line)!important;color:#7f8da0!important}
+.trendora-store .form-check-input,.trendora-admin .form-check-input{background-color:#0b1018!important;border-color:rgba(255,255,255,.22)!important}.trendora-store .form-check-input:checked,.trendora-admin .form-check-input:checked{background-color:var(--ac-primary)!important;border-color:var(--ac-primary)!important}.trendora-store .form-range::-webkit-slider-thumb,.trendora-admin .form-range::-webkit-slider-thumb{background:var(--ac-primary)!important}
+
+/* Buttons */
+.trendora-store .btn,.trendora-admin .btn,.trendora-auth .btn{
+  border-radius:13px!important;font-weight:750!important;letter-spacing:-.01em!important;transition:transform .25s var(--ac-ease),background .25s,border-color .25s,box-shadow .25s!important;
+}
+.trendora-store .btn:hover,.trendora-admin .btn:hover,.trendora-auth .btn:hover{transform:translateY(-2px)}
+.trendora-store .btn-primary,.trendora-admin .btn-primary,.trendora-auth .btn-primary,.trendora-store .btn-filter,.trendora-admin .btn-filter{
+  color:#fff!important;border-color:transparent!important;background:linear-gradient(135deg,var(--ac-primary),var(--ac-primary-2))!important;box-shadow:0 12px 30px rgba(91,124,255,.22)!important
+}
+.trendora-store .btn-outline-primary,.trendora-admin .btn-outline-primary{color:#d8c9ff!important;border-color:rgba(139,92,246,.35)!important;background:rgba(139,92,246,.09)!important}.trendora-store .btn-outline-primary:hover,.trendora-admin .btn-outline-primary:hover{background:rgba(139,92,246,.18)!important;color:#fff!important}
+.trendora-store .btn-secondary,.trendora-admin .btn-secondary,.trendora-store .btn-light,.trendora-admin .btn-light,.trendora-store .btn-outline-light,.trendora-admin .btn-outline-light{color:#fff!important;border-color:var(--ac-line)!important;background:rgba(255,255,255,.045)!important}.trendora-store .btn-secondary:hover,.trendora-admin .btn-secondary:hover,.trendora-store .btn-light:hover,.trendora-admin .btn-light:hover,.trendora-store .btn-outline-light:hover,.trendora-admin .btn-outline-light:hover{background:rgba(255,255,255,.08)!important}
+.trendora-store .btn-danger,.trendora-admin .btn-danger,.trendora-store .btn-outline-danger,.trendora-admin .btn-outline-danger{color:#fecaca!important;border-color:rgba(239,68,68,.22)!important;background:rgba(239,68,68,.12)!important}.trendora-store .btn-success,.trendora-admin .btn-success{color:#a7f3d0!important;border-color:rgba(16,185,129,.18)!important;background:rgba(16,185,129,.12)!important}.trendora-store .btn-warning,.trendora-admin .btn-warning{color:#fde68a!important;border-color:rgba(245,158,11,.18)!important;background:rgba(245,158,11,.12)!important}
+
+/* Products: recreate initial card feel around real images */
+.tr-product-grid,.products-grid,.product-grid{gap:16px!important}.tr-product-tile,.product-grid-card,.product-card{overflow:hidden!important;position:relative!important}.tr-product-media,.product-grid-card .image-wrap,.product-card .product-image,.product-image-wrapper{position:relative!important;overflow:hidden!important;background:linear-gradient(145deg,#1c2330,#0f1520)!important;border-bottom:1px solid var(--ac-line)!important}.tr-product-media::after,.product-grid-card .image-wrap::after,.product-image-wrapper::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.10) 50%,transparent 65%);transform:translateX(-115%);transition:.75s var(--ac-ease);pointer-events:none}.tr-product-tile:hover .tr-product-media::after,.product-grid-card:hover .image-wrap::after,.product-card:hover .product-image-wrapper::after{transform:translateX(115%)}
+.tr-product-media img,.product-grid-card .image-wrap img,.product-card img{transition:transform .45s var(--ac-ease)!important}.tr-product-tile:hover .tr-product-media img,.product-grid-card:hover .image-wrap img,.product-card:hover img{transform:scale(1.045)!important}.price,.tr-product-price strong,.product-price,.current-price{color:#fff!important;font-weight:850!important;letter-spacing:-.03em}.old-price,.original-price,del,.text-decoration-line-through{color:#657286!important}.rating,.text-warning,.fa-star{color:#fbbf24!important}.category-name,.product-category{color:#8ea0b6!important;text-transform:uppercase!important;letter-spacing:.09em!important;font-size:11px!important;font-weight:750!important}
+.badge,.tr-badge-soft,.badge-sale,.sale-badge,.stock-badge{border-radius:999px!important;border:1px solid rgba(255,255,255,.10)!important;backdrop-filter:blur(12px)}.bg-primary,.badge.bg-primary{background:rgba(139,92,246,.16)!important;color:#d8c9ff!important}.bg-success,.badge.bg-success{background:rgba(16,185,129,.10)!important;color:#8ce6c0!important}.bg-warning,.badge.bg-warning{background:rgba(245,158,11,.10)!important;color:#ffd27d!important}.bg-danger,.badge.bg-danger{background:rgba(239,68,68,.10)!important;color:#fca5a5!important}.bg-info,.badge.bg-info{background:rgba(34,211,238,.10)!important;color:#a5f3fc!important}
+
+/* Tables */
+.trendora-store .table-responsive,.trendora-admin .table-responsive,.trendora-store .table-wrap,.trendora-admin .table-wrap{overflow:auto!important;border:1px solid var(--ac-line)!important;border-radius:18px!important;background:rgba(11,16,24,.56)!important}
+.trendora-store .table,.trendora-admin .table{--bs-table-bg:transparent!important;--bs-table-color:#dbe5f2!important;--bs-table-border-color:var(--ac-line)!important;color:#dbe5f2!important;margin-bottom:0!important}.trendora-store .table>:not(caption)>*>*,.trendora-admin .table>:not(caption)>*>*{background:transparent!important;color:inherit!important;border-color:var(--ac-line)!important;box-shadow:none!important}.trendora-store .table thead th,.trendora-admin .table thead th{font-size:11px!important;text-transform:uppercase!important;letter-spacing:.09em!important;color:#68778b!important;background:rgba(255,255,255,.025)!important;font-weight:800!important}.trendora-store .table tbody tr,.trendora-admin .table tbody tr{transition:.2s}.trendora-store .table tbody tr:hover,.trendora-admin .table tbody tr:hover{background:rgba(255,255,255,.025)!important}.trendora-store .table a,.trendora-admin .table a{color:#c4b5fd}
+
+/* List groups / nav pills / pagination / accordion / modal */
+.trendora-store .list-group-item,.trendora-admin .list-group-item{color:#d6dfeb!important;background:rgba(255,255,255,.025)!important;border-color:var(--ac-line)!important}.trendora-store .list-group-item-action:hover,.trendora-admin .list-group-item-action:hover{background:rgba(139,92,246,.08)!important;color:#fff!important}
+.trendora-store .nav-tabs,.trendora-admin .nav-tabs{border-color:var(--ac-line)!important}.trendora-store .nav-tabs .nav-link,.trendora-admin .nav-tabs .nav-link,.trendora-store .nav-pills .nav-link,.trendora-admin .nav-pills .nav-link{border:0!important;border-radius:11px!important;color:#8796a9!important}.trendora-store .nav-tabs .nav-link.active,.trendora-admin .nav-tabs .nav-link.active,.trendora-store .nav-pills .nav-link.active,.trendora-admin .nav-pills .nav-link.active{color:#d8c9ff!important;background:rgba(139,92,246,.12)!important}
+.trendora-store .pagination,.trendora-admin .pagination{gap:6px}.trendora-store .page-link,.trendora-admin .page-link{color:#aeb9c7!important;background:rgba(255,255,255,.035)!important;border:1px solid var(--ac-line)!important;border-radius:10px!important}.trendora-store .active>.page-link,.trendora-admin .active>.page-link{color:#fff!important;background:linear-gradient(135deg,var(--ac-primary),var(--ac-primary-2))!important;border-color:transparent!important}
+.trendora-store .accordion-item,.trendora-admin .accordion-item{background:transparent!important;border-color:var(--ac-line)!important;color:#dbe5f2!important}.trendora-store .accordion-button,.trendora-admin .accordion-button{background:rgba(255,255,255,.025)!important;color:#fff!important;box-shadow:none!important}.trendora-store .accordion-button:not(.collapsed),.trendora-admin .accordion-button:not(.collapsed){background:rgba(139,92,246,.08)!important;color:#d8c9ff!important}.accordion-button::after{filter:invert(1) grayscale(1)}
+.modal-content{background:#0e141e!important;color:#eaf0f7!important;border:1px solid var(--ac-line)!important;border-radius:20px!important;box-shadow:var(--ac-shadow)!important}.modal-header,.modal-footer{border-color:var(--ac-line)!important}.btn-close{filter:invert(1) grayscale(1)}
+
+/* Alerts / statuses */
+.trendora-store .alert,.trendora-admin .alert{border:1px solid var(--ac-line)!important;border-radius:16px!important;background:rgba(255,255,255,.04)!important;color:#dbe5f2!important}.trendora-store .alert-success,.trendora-admin .alert-success{background:rgba(16,185,129,.09)!important;border-color:rgba(16,185,129,.18)!important;color:#a7f3d0!important}.trendora-store .alert-danger,.trendora-admin .alert-danger{background:rgba(239,68,68,.09)!important;border-color:rgba(239,68,68,.18)!important;color:#fecaca!important}.trendora-store .alert-warning,.trendora-admin .alert-warning{background:rgba(245,158,11,.09)!important;border-color:rgba(245,158,11,.18)!important;color:#fde68a!important}.trendora-store .alert-info,.trendora-admin .alert-info{background:rgba(34,211,238,.08)!important;border-color:rgba(34,211,238,.18)!important;color:#a5f3fc!important}
+
+/* Footer */
+.tr-footer{margin-top:70px!important;border-top:1px solid var(--ac-line)!important;background:linear-gradient(180deg,rgba(10,13,19,.3),rgba(5,7,10,.95))!important;color:#8492a8!important}.tr-footer-main{background:transparent!important}.tr-footer h6{color:#fff!important;font-size:12px!important;text-transform:uppercase!important;letter-spacing:.1em!important}.tr-footer-links a{color:#8796a9!important;transition:.2s!important}.tr-footer-links a:hover{color:#fff!important;transform:translateX(2px)}.tr-socials a{border:1px solid var(--ac-line)!important;background:rgba(255,255,255,.035)!important;color:#aeb9c7!important;border-radius:12px!important}.tr-socials a:hover{background:rgba(139,92,246,.12)!important;color:#fff!important;border-color:rgba(139,92,246,.28)!important}.tr-footer input{background:#0b1018!important;border-color:var(--ac-line)!important;color:#fff!important}.tr-footer-bottom{border-color:var(--ac-line)!important}
+
+/* ========================================================================== */
+/* Admin — initial prototype sidebar/topbar/cards                              */
+/* ========================================================================== */
+.trendora-admin{--ad-sidebar-width:282px!important;background:var(--ac-bg)!important}.ad-shell{background:transparent!important}.ad-sidebar{width:282px!important;border-right:1px solid var(--ac-line)!important;background:rgba(8,10,15,.80)!important;backdrop-filter:blur(22px)!important;padding:18px!important}.ad-brand{padding:7px 8px 18px!important;gap:12px!important}.ad-brand-mark{width:42px!important;height:42px!important;border-radius:14px!important;background:linear-gradient(135deg,var(--ac-primary),var(--ac-cyan))!important;color:#fff!important;box-shadow:0 12px 30px rgba(139,92,246,.28)!important}.ad-brand-copy strong{color:#fff!important}.ad-brand-copy small{color:var(--ac-muted)!important}
+.ad-nav-search{margin:0 4px 14px!important}.ad-nav-search input{height:42px!important;border:1px solid var(--ac-line)!important;background:#0b1018!important;border-radius:13px!important;color:#fff!important}.ad-nav-search input:focus{border-color:rgba(139,92,246,.5)!important;box-shadow:0 0 0 4px rgba(139,92,246,.08)!important}.ad-nav-section{font-size:11px!important;text-transform:uppercase!important;letter-spacing:.16em!important;color:#617083!important;padding:0 10px 7px!important;margin-top:14px!important}.ad-link{display:flex!important;align-items:center!important;gap:11px!important;min-height:44px!important;padding:8px 11px!important;border-radius:12px!important;color:#aeb9c7!important;margin:2px 0!important;transition:.25s!important;border:0!important;background:transparent!important}.ad-link>i{width:30px!important;height:30px!important;border-radius:9px!important;display:grid!important;place-items:center!important;background:rgba(255,255,255,.045)!important;color:#8d9aab!important;font-size:13px!important}.ad-link:hover,.ad-link.active{color:#fff!important;background:linear-gradient(90deg,rgba(139,92,246,.16),rgba(34,211,238,.04))!important;transform:translateX(2px)!important}.ad-link.active>i{color:#d8c9ff!important;background:rgba(139,92,246,.13)!important}.ad-count{margin-left:auto!important;min-width:22px!important;padding:3px 6px!important;border-radius:999px!important;background:rgba(255,255,255,.055)!important;color:#8492a8!important;font-size:9px!important;text-align:center!important}
+.ad-main{margin-left:282px!important;background:transparent!important}.ad-topbar{position:sticky!important;top:0!important;z-index:1020!important;min-height:70px!important;padding:14px 26px!important;border-bottom:1px solid var(--ac-line)!important;background:rgba(9,11,16,.70)!important;backdrop-filter:blur(20px)!important}.ad-content{max-width:1600px!important;margin:auto!important;padding:26px!important}.ad-page-head{margin:2px 0 22px!important}.ad-page-head h1,.ad-page-head h2{font-size:clamp(28px,3vw,44px)!important;line-height:1.02!important;letter-spacing:-.04em!important;font-weight:850!important}.ad-page-head p{color:var(--ac-muted)!important;max-width:700px!important}.ad-icon-btn,.ad-user-btn{border:1px solid var(--ac-line)!important;color:#fff!important;background:rgba(255,255,255,.045)!important;border-radius:13px!important;transition:.25s!important}.ad-icon-btn:hover,.ad-user-btn:hover{transform:translateY(-1px)!important;background:rgba(255,255,255,.08)!important}.ad-user-avatar,.ad-avatar{background:linear-gradient(135deg,#242d3d,#151a25)!important;border:1px solid var(--ac-line)!important;color:#fff!important}
+.ad-stat{min-height:122px!important}.ad-stat strong,.ad-metric-value,.metric-value{font-size:30px!important;font-weight:850!important;letter-spacing:-.04em!important;color:#fff!important}.ad-stat small{color:var(--ac-muted)!important}.ad-stat-icon{background:rgba(139,92,246,.12)!important;color:#d8c9ff!important;border:1px solid rgba(139,92,246,.14)!important}.ad-progress,.progress{height:8px!important;background:#0b1018!important;border:1px solid rgba(255,255,255,.05)!important;border-radius:999px!important;overflow:hidden!important}.ad-progress>span,.progress>span,.progress-bar{background:linear-gradient(90deg,var(--ac-primary),var(--ac-cyan))!important;border-radius:999px!important}
+.ad-content canvas{filter:saturate(.9)}.chart .bar,.ad-bar{background:linear-gradient(180deg,var(--ac-primary),rgba(91,124,255,.25))!important;animation:acRise .7s var(--ac-ease) both!important}
+
+/* Auth — same centered glass card language */
+body.trendora-auth{display:block!important}.trendora-auth .auth-orb{opacity:.7!important;filter:blur(12px)!important}.trendora-auth .auth-orb-one{background:rgba(139,92,246,.17)!important}.trendora-auth .auth-orb-two{background:rgba(34,211,238,.10)!important}.trendora-auth .auth-shell{width:min(1180px,calc(100% - 36px))!important;margin:auto!important;min-height:100vh!important;gap:24px!important}.trendora-auth .auth-story{border:1px solid var(--ac-line)!important;border-radius:28px!important;background:linear-gradient(135deg,rgba(139,92,246,.16),rgba(34,211,238,.05) 50%,rgba(255,255,255,.025))!important;box-shadow:var(--ac-shadow)!important}.trendora-auth .auth-story::before{background:radial-gradient(circle,rgba(99,102,241,.34),transparent 65%)!important}.trendora-auth .auth-brand span,.trendora-auth .auth-mobile-brand span{background:linear-gradient(135deg,var(--ac-primary),var(--ac-cyan))!important;box-shadow:0 12px 30px rgba(139,92,246,.28)!important}.trendora-auth .auth-card{border:1px solid var(--ac-line)!important;background:rgba(17,23,34,.80)!important;backdrop-filter:blur(20px)!important;box-shadow:var(--ac-shadow)!important;border-radius:26px!important}.trendora-auth .auth-icon{background:rgba(139,92,246,.12)!important;color:#d8c9ff!important;border:1px solid rgba(139,92,246,.18)!important}.trendora-auth .auth-input input{background:#0b1018!important;border-color:var(--ac-line)!important;color:#fff!important}.trendora-auth .auth-input i{color:#75849a!important}.trendora-auth .auth-submit{background:linear-gradient(135deg,var(--ac-primary),var(--ac-primary-2))!important;box-shadow:0 12px 30px rgba(91,124,255,.22)!important}.trendora-auth .auth-alert{border:1px solid var(--ac-line)!important}.trendora-auth .auth-alert.success{background:rgba(16,185,129,.09)!important;color:#a7f3d0!important}.trendora-auth .auth-alert.danger{background:rgba(239,68,68,.09)!important;color:#fecaca!important}
+
+/* Admin login standalone */
+.astra-admin-login .ad-auth-shell{background:transparent!important}.astra-admin-login .ad-auth-glow{background:rgba(139,92,246,.16)!important}.astra-admin-login .ad-auth-card{border:1px solid var(--ac-line)!important;background:rgba(17,23,34,.80)!important;backdrop-filter:blur(22px)!important;box-shadow:var(--ac-shadow)!important}.astra-admin-login .ad-auth-card .input-group-text,.astra-admin-login .ad-auth-card .form-control{background:#0b1018!important;border-color:var(--ac-line)!important;color:#fff!important}
+
+/* Maintenance / errors */
+.astra-commerce .tn-maintenance,.trendora-store .tn-maintenance{background:transparent!important}.astra-commerce .tn-maintenance-card,.trendora-store .tn-maintenance-card,.trendora-store .tn-error-card{border:1px solid var(--ac-line)!important;background:linear-gradient(135deg,rgba(139,92,246,.14),rgba(34,211,238,.05),rgba(255,255,255,.025))!important;box-shadow:var(--ac-shadow)!important;border-radius:28px!important}.tn-maintenance-icon,.tn-error-code{background:linear-gradient(135deg,var(--ac-primary),var(--ac-cyan))!important;color:#fff!important;box-shadow:0 20px 50px rgba(139,92,246,.22)!important}
+
+/* Legacy selectors normalized: this deliberately kills the old white/purple theme */
+.trendora-store [style*="#f8f9fa"],.trendora-admin [style*="#f8f9fa"]{background-color:rgba(255,255,255,.035)!important;color:var(--ac-text)!important}.trendora-store [style*="#667eea"],.trendora-admin [style*="#667eea"]{color:var(--ac-primary)!important}.trendora-store [style*="#764ba2"],.trendora-admin [style*="#764ba2"]{color:var(--ac-primary-2)!important}.trendora-store [style*="#b2bec3"],.trendora-admin [style*="#b2bec3"],.trendora-store [style*="#636e72"],.trendora-admin [style*="#636e72"]{color:var(--ac-muted)!important}
+.trendora-store .filter-title,.trendora-admin .filter-title,.trendora-store .section-title,.trendora-admin .section-title{color:#fff!important}.trendora-store .filter-group,.trendora-admin .filter-group{border-color:var(--ac-line)!important}.trendora-store .price-input-group,.trendora-admin .price-input-group{gap:8px!important}.trendora-store .btn-reset,.trendora-admin .btn-reset{color:#93a1b4!important}.trendora-store .btn-reset:hover,.trendora-admin .btn-reset:hover{color:#fff!important}
+
+/* Invoices remain white when printed, but match Astra on-screen. */
+@media screen{
+  .trendora-invoice{background:var(--ac-bg)!important;color:var(--ac-text)!important}.trendora-invoice .invoice-container,.trendora-invoice .invoice-card,.trendora-invoice .invoice-wrapper{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.025))!important;color:var(--ac-text)!important;border:1px solid var(--ac-line)!important;border-radius:22px!important;box-shadow:var(--ac-shadow)!important}.trendora-invoice table{color:#dbe5f2!important}.trendora-invoice th,.trendora-invoice td{border-color:var(--ac-line)!important}.trendora-invoice .text-muted{color:var(--ac-muted)!important}
+}
+@media print{
+  body.trendora-invoice{background:#fff!important;color:#111!important}.trendora-invoice .invoice-container,.trendora-invoice .invoice-card,.trendora-invoice .invoice-wrapper{background:#fff!important;color:#111!important;border:0!important;box-shadow:none!important}.trendora-invoice table{color:#111!important}.trendora-invoice th,.trendora-invoice td{border-color:#ddd!important}.trendora-invoice .text-muted{color:#666!important}
+}
+
+/* Responsive */
+@media(max-width:1199.98px){.tr-search{min-width:210px!important}.ad-content{padding:22px!important}}
+@media(max-width:991.98px){.tr-topline{display:none!important}.tr-navbar{top:0!important}.tr-search{margin-block:12px!important;width:100%!important}.ad-sidebar{width:282px!important;left:-294px!important}.ad-main{margin-left:0!important}.ad-menu-open .ad-sidebar{left:0!important}.ad-content{padding:18px!important}.trendora-auth .auth-shell{width:min(760px,calc(100% - 28px))!important}}
+@media(max-width:767.98px){.tr-shell{width:min(100% - 24px,1460px)!important}.tr-home-hero,.page-hero,.shop-header,.products-header,.checkout-header,.account-header,.profile-header,.wishlist-header,.cart-header{border-radius:22px!important}.trendora-store .card,.trendora-admin .card,.trendora-store .tr-card,.trendora-admin .ad-card{border-radius:18px!important}.ad-content{padding:16px 13px!important}.ad-topbar{padding-inline:13px!important}}
+@media(max-width:575.98px){.tr-shell{width:min(100% - 18px,1460px)!important}.tr-logo{width:38px!important;height:38px!important;border-radius:12px!important}.tr-product-media,.product-grid-card .image-wrap{min-height:245px}.trendora-auth .auth-shell{width:100%!important;padding:12px!important}.trendora-auth .auth-card{border-radius:20px!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* ========================================================================== */
+/* Final mobile release pass · 320px → desktop                                */
+/* Added after the Astra visual system so every Blade surface gets the same   */
+/* overflow, touch, form, table, navigation and admin responsive safeguards.   */
+/* ========================================================================== */
+.trendora-store *, .trendora-admin *, .trendora-auth *, .trendora-invoice *{box-sizing:border-box}
+.trendora-store :is(img,svg,video,canvas,iframe),.trendora-admin :is(img,svg,video,canvas,iframe),.trendora-auth :is(img,svg,video,canvas,iframe),.trendora-invoice :is(img,svg,video,canvas,iframe){max-width:100%}
+.trendora-store :is(h1,h2,h3,h4,h5,h6,p,a,span,td,th,label),.trendora-admin :is(h1,h2,h3,h4,h5,h6,p,a,span,td,th,label),.trendora-auth :is(h1,h2,h3,p,a,span,label){overflow-wrap:anywhere}
+.trendora-store :is(input,select,textarea,button),.trendora-admin :is(input,select,textarea,button),.trendora-auth :is(input,select,textarea,button){max-width:100%}
+.trendora-store .table-responsive,.trendora-admin .table-responsive,.trendora-invoice .table-responsive{width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain;scrollbar-width:thin}
+.trendora-store .modal-dialog,.trendora-admin .modal-dialog{max-width:min(var(--bs-modal-width,500px),calc(100vw - 24px));margin-left:auto;margin-right:auto}
+.trendora-store .dropdown-menu,.trendora-admin .dropdown-menu{max-width:calc(100vw - 20px)}
+.trendora-store .pagination,.trendora-admin .pagination{flex-wrap:wrap;gap:4px}
+.trendora-store .pagination .page-link,.trendora-admin .pagination .page-link{min-width:38px;text-align:center}
+
+@media(max-width:991.98px){
+  .trendora-store .tr-navbar .navbar-collapse{max-height:calc(100dvh - 72px);overflow-y:auto;overscroll-behavior:contain;padding:10px 0 16px}
+  .trendora-store .tr-navbar .navbar-collapse>.d-flex{width:100%;flex-wrap:wrap}
+  .trendora-store .tr-navbar .navbar-nav{width:100%}
+  .trendora-store .tr-navlink{min-height:44px;display:flex!important;align-items:center!important}
+  .trendora-store .tr-search{min-width:0!important;width:100%!important}
+  .trendora-store .tr-kbd{display:none!important}
+  .trendora-store .tr-action{flex:0 0 44px;min-width:44px;min-height:44px}
+  .trendora-store .tr-auth-btn{min-height:44px}
+
+  body.trendora-admin.ad-menu-open{overflow:hidden!important;touch-action:none}
+  .trendora-admin .ad-sidebar{width:min(86vw,320px)!important;left:min(-88vw,-330px)!important;padding-bottom:max(18px,env(safe-area-inset-bottom))!important}
+  .trendora-admin.ad-menu-open .ad-sidebar,.ad-menu-open .trendora-admin .ad-sidebar{left:0!important}
+  .trendora-admin .ad-overlay{position:fixed;inset:0;z-index:1040;background:rgba(0,0,0,.58);backdrop-filter:blur(3px);opacity:0;visibility:hidden;pointer-events:none;transition:.22s var(--ac-ease)}
+  body.ad-menu-open .ad-overlay{opacity:1;visibility:visible;pointer-events:auto}
+  .trendora-admin .ad-mobile-toggle{display:grid!important;place-items:center!important;flex:0 0 42px;width:42px!important;height:42px!important}
+  .trendora-admin .ad-topbar{min-width:0!important}
+  .trendora-admin .ad-top-actions{min-width:0;flex-shrink:0}
+  .trendora-admin .ad-title{min-width:0}
+  .trendora-admin .ad-title strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40vw}
+  .trendora-admin .ad-filterbar{grid-template-columns:minmax(0,1fr) minmax(140px,.55fr)!important}
+  .trendora-admin .ad-filterbar>*{min-width:0!important;width:100%!important}
+}
+
+@media(max-width:767.98px){
+  .trendora-store :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea),
+  .trendora-admin :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea),
+  .trendora-auth :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea){font-size:16px!important}
+  .trendora-store :is(.form-control,.form-select),.trendora-admin :is(.form-control,.form-select){min-height:44px}
+  .trendora-store textarea.form-control,.trendora-admin textarea.form-control{min-height:110px}
+  .trendora-store .btn:not(.btn-sm),.trendora-admin .btn:not(.btn-sm),.trendora-auth button{min-height:44px}
+
+  .trendora-store .tr-page-head,.trendora-store .tr-section-title,.trendora-store .tr-order-card-head{align-items:flex-start!important;flex-direction:column!important}
+  .trendora-store .tr-page-head>*,.trendora-store .tr-section-title>*{max-width:100%}
+  .trendora-store .tr-page-head .d-flex,.trendora-store .tr-section-title .d-flex{width:100%;flex-wrap:wrap}
+  .trendora-store .tr-checkout-steps{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
+  .trendora-store .tr-checkout-steps button{height:auto!important;min-height:48px!important;padding:8px!important;font-size:11px!important;line-height:1.2}
+  .trendora-store .tr-checkout-steps button span{margin-right:4px!important}
+  .trendora-store .tr-step-actions{display:grid!important;grid-template-columns:1fr!important;width:100%}
+  .trendora-store .tr-step-actions .btn{width:100%!important}
+  .trendora-store .tr-wishlist-actions{justify-content:stretch!important;flex-wrap:wrap}
+  .trendora-store .tr-wishlist-actions>*{flex:1 1 auto}
+  .trendora-store .tr-account-nav nav{padding-bottom:4px}
+
+  .trendora-store .table-responsive>.table,.trendora-admin .table-responsive>.table{min-width:680px;margin-bottom:0}
+  .trendora-store .table-responsive{border-radius:14px}
+  .trendora-admin .table-responsive{border-radius:14px}
+
+  .trendora-admin .ad-topbar{min-height:64px!important;height:auto!important;padding:9px 12px!important;gap:8px!important}
+  .trendora-admin .ad-topbar>div:first-child{min-width:0;gap:8px!important}
+  .trendora-admin .ad-top-actions{gap:5px!important}
+  .trendora-admin .ad-icon-btn{width:40px!important;height:40px!important;flex:0 0 40px}
+  .trendora-admin .ad-profile{max-width:42px;overflow:hidden}
+  .trendora-admin .ad-avatar{flex:0 0 38px}
+  .trendora-admin .ad-title strong{max-width:34vw;font-size:13px!important}
+  .trendora-admin .ad-page-head{align-items:stretch!important}
+  .trendora-admin .ad-page-head>div:last-child{width:100%!important;display:flex;flex-wrap:wrap;gap:8px}
+  .trendora-admin .ad-page-head>div:last-child>*{flex:1 1 150px}
+  .trendora-admin .ad-filterbar{grid-template-columns:1fr!important}
+  .trendora-admin .ad-filterbar>*{width:100%!important;max-width:none!important}
+  .trendora-admin .card{max-width:100%;overflow-wrap:anywhere}
+  .trendora-admin .modal-body,.trendora-admin .modal-header,.trendora-admin .modal-footer{padding-left:14px!important;padding-right:14px!important}
+  .trendora-admin .modal-footer{flex-wrap:wrap}
+  .trendora-admin .modal-footer .btn{flex:1 1 130px}
+  .trendora-admin .input-group{max-width:100%}
+  .trendora-admin .input-group>*{min-width:0}
+
+  .trendora-auth .auth-shell{min-height:100dvh!important;margin:0 auto!important;border-radius:0!important;border-left:0!important;border-right:0!important}
+  .trendora-auth .auth-panel{padding:24px 18px!important}
+  .trendora-auth .auth-heading{align-items:flex-start!important}
+  .trendora-auth .auth-card{max-width:100%!important}
+
+  body.trendora-invoice{padding:16px!important;overflow-x:hidden}
+  .trendora-invoice .invoice-wrapper{width:100%!important;max-width:100%!important}
+  .trendora-invoice .header,.trendora-invoice .customer-info,.trendora-invoice .footer{gap:14px!important}
+  .trendora-invoice .table{display:block;width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
+  .trendora-invoice .table :is(th,td){min-width:110px}
+  .trendora-invoice .totals{width:100%!important;max-width:100%!important}
+}
+
+@media(max-width:575.98px){
+  .trendora-store .tr-shell{width:calc(100% - 18px)!important}
+  .trendora-store .tr-navbar .navbar{padding-block:8px!important}
+  .trendora-store .tr-brand{margin-right:8px!important;min-width:0}
+  .trendora-store .tr-brand>span:last-child{font-size:18px}
+  .trendora-store .navbar-toggler{width:44px;height:44px;padding:7px}
+  .trendora-store .tr-navbar .navbar-collapse>.d-flex{gap:7px!important}
+  .trendora-store .tr-navbar .navbar-collapse>.d-flex .tr-auth-btn{flex:1 1 calc(50% - 5px);justify-content:center;text-align:center}
+  .trendora-store .tr-navbar .dropdown{flex:1 1 150px}
+  .trendora-store .tr-navbar .dropdown>.tr-auth-btn{width:100%;justify-content:center}
+  .trendora-store .tr-navbar .dropdown-menu{width:min(280px,calc(100vw - 28px))}
+  .trendora-store .tr-mobile-dock{left:7px!important;right:7px!important;bottom:max(7px,env(safe-area-inset-bottom))!important;border-radius:17px!important}
+  .trendora-store .tr-mobile-dock :is(a,button){min-height:46px!important}
+  .trendora-store .tr-home-hero,.trendora-store .page-hero,.trendora-store .shop-header,.trendora-store .products-header,.trendora-store .checkout-header,.trendora-store .account-header,.trendora-store .profile-header,.trendora-store .wishlist-header,.trendora-store .cart-header{padding-left:16px!important;padding-right:16px!important}
+  .trendora-store .tr-page-head h1{font-size:clamp(2rem,11vw,2.75rem)!important}
+  .trendora-store .tr-info-hero h1{font-size:clamp(2.25rem,12vw,3rem)!important}
+  .trendora-store .tr-order-card-actions .btn{flex:1 1 140px}
+  .trendora-store .tr-payment-option{grid-template-columns:auto minmax(0,1fr)!important}
+  .trendora-store .tr-payment-option>b{display:none!important}
+
+  .trendora-admin .ad-content{padding:12px 9px calc(18px + env(safe-area-inset-bottom))!important}
+  .trendora-admin .ad-topbar{padding-inline:9px!important}
+  .trendora-admin .ad-title strong{max-width:29vw}
+  .trendora-admin .ad-top-actions .ad-icon-btn:nth-of-type(2){display:none}
+  .trendora-admin .ad-page-head h1,.trendora-admin .ad-page-head h2{font-size:clamp(25px,9vw,34px)!important}
+  .trendora-admin .ad-page-head>div:last-child>*{flex-basis:100%}
+  .trendora-admin .card{border-radius:16px!important}
+  .trendora-admin .card :is(.p-4,.p-5){padding:16px!important}
+  .trendora-admin .table-responsive>.table{min-width:620px}
+  .trendora-admin .pagination{justify-content:center}
+
+  .trendora-auth .auth-panel{padding:20px 14px!important}
+  .trendora-auth .auth-heading{gap:12px!important;margin-bottom:22px!important}
+  .trendora-auth .auth-icon{width:46px!important;height:46px!important;border-radius:14px!important}
+  .trendora-auth .auth-heading h2{font-size:1.55rem!important}
+  .astra-admin-login .ad-auth-shell{padding:12px!important;min-height:100dvh!important}
+  .astra-admin-login .ad-auth-card{width:100%!important;max-width:480px!important;padding:24px 18px!important;border-radius:20px!important}
+  .astra-admin-login .ad-auth-card .d-flex.justify-content-between{flex-direction:column;align-items:center!important}
+
+  body.trendora-invoice{padding:10px!important}
+  .trendora-invoice .header{align-items:flex-start!important;text-align:left!important}
+  .trendora-invoice .header .invoice-info{text-align:left!important;margin-top:0!important}
+  .trendora-invoice .customer-info{align-items:flex-start!important}
+  .trendora-invoice .footer{flex-direction:column!important;align-items:flex-start!important}
+  .trendora-invoice .footer .signature{text-align:left!important}
+  .trendora-invoice .footer .signature .line{margin-left:0!important}
+}
+
+@media(max-width:359.98px){
+  .trendora-store .tr-logo{width:35px!important;height:35px!important}
+  .trendora-store .tr-brand>span:last-child{font-size:16px}
+  .trendora-store .tr-checkout-steps{grid-template-columns:1fr!important}
+  .trendora-admin .ad-top-actions .ad-icon-btn{display:none!important}
+  .trendora-admin .ad-title strong{max-width:45vw}
+}
+
+@media print{
+  .trendora-invoice .table{display:table!important;overflow:visible!important;white-space:normal!important}
+  .trendora-invoice .table :is(th,td){min-width:0!important}
+}
+
+/* ========================================================================== */
+/* Final laptop admin + customer mobile corrections (2026-08)                */
+/* ========================================================================== */
+
+/* Admin desktop: the shell already owns the sidebar column. Never offset the
+   main area a second time; the old double offset caused narrow/vertical cards. */
+@media(min-width:992px){
+  body.trendora-admin .ad-shell{display:grid!important;grid-template-columns:282px minmax(0,1fr)!important;align-items:start!important}
+  body.trendora-admin .ad-sidebar{position:sticky!important;inset:auto!important;top:0!important;width:282px!important;height:100vh!important}
+  body.trendora-admin .ad-main{margin-left:0!important;width:auto!important;min-width:0!important;max-width:none!important}
+  body.trendora-admin .ad-topbar{width:100%!important;left:auto!important;right:auto!important}
+  body.trendora-admin .ad-content{width:100%!important;max-width:1600px!important;margin-inline:auto!important;padding:28px 30px!important}
+}
+
+/* Admin content should remain readable on common 1366–1920px laptops. */
+body.trendora-admin .row>*{min-width:0}
+body.trendora-admin .stat-card{min-width:0!important;height:100%!important}
+body.trendora-admin .stat-card .stat-number{background:none!important;color:#fff!important;-webkit-text-fill-color:#fff!important;overflow-wrap:normal!important;word-break:normal!important;white-space:nowrap!important}
+body.trendora-admin .stat-card .stat-label{color:#93a1b4!important;overflow-wrap:normal!important;word-break:normal!important;white-space:normal!important;line-height:1.35!important}
+body.trendora-admin .quick-action{color:#eef2f7!important}
+body.trendora-admin .quick-action h6{color:#fff!important}
+body.trendora-admin .ad-stat span{overflow-wrap:normal!important;word-break:normal!important}
+body.trendora-admin .ad-stat strong{overflow-wrap:normal!important;word-break:normal!important;white-space:nowrap!important}
+
+/* Customer navigation: Bootstrap's collapsed menu must move onto its own row.
+   The old nowrap shell made the open mobile menu sit beside the logo. */
+@media(max-width:991.98px){
+  body.trendora-store .tr-navbar .tr-shell{display:flex!important;flex-wrap:wrap!important;align-items:center!important}
+  body.trendora-store .tr-navbar .tr-brand{flex:0 1 auto!important;white-space:nowrap!important}
+  body.trendora-store .tr-navbar .navbar-toggler{margin-left:auto!important;flex:0 0 44px!important}
+  body.trendora-store .tr-navbar .navbar-collapse{flex-basis:100%!important;width:100%!important;min-width:0!important;margin:0!important;padding:12px 0 8px!important}
+  body.trendora-store .tr-navbar .navbar-collapse.collapsing,
+  body.trendora-store .tr-navbar .navbar-collapse.show{display:block!important}
+  body.trendora-store .tr-navbar .navbar-nav{width:100%!important;margin:0 0 8px!important;align-items:stretch!important}
+  body.trendora-store .tr-navbar .tr-navlink{width:100%!important;padding:11px 13px!important}
+  body.trendora-store .tr-navbar .tr-search{width:100%!important;min-width:0!important;margin:8px 0 10px!important}
+  body.trendora-store .tr-navbar .navbar-collapse>.d-flex{width:100%!important;margin:0!important;display:flex!important;flex-wrap:wrap!important;justify-content:flex-start!important}
+}
+
+@media(max-width:575.98px){
+  body.trendora-store .tr-navbar .tr-brand{gap:9px!important}
+  body.trendora-store .tr-navbar .tr-brand>span:last-child{font-size:20px!important;white-space:nowrap!important}
+  body.trendora-store .tr-navbar .navbar-collapse>.d-flex .tr-action{flex:0 0 44px!important}
+  body.trendora-store .tr-navbar .dropdown{flex:1 1 min(180px,100%)!important;min-width:0!important}
+}
+
+/* Product catalogue: contained, readable and mobile-first. */
+body.trendora-store .tr-catalog-page{padding:28px 0 16px!important;overflow:hidden}
+body.trendora-store .tr-catalog-page>.tr-shell{min-width:0!important}
+body.trendora-store .tr-catalog-page>.tr-shell>.row{margin-left:0!important;margin-right:0!important}
+body.trendora-store .tr-catalog-page>.tr-shell>.row>[class*="col-"]{min-width:0;padding-left:8px;padding-right:8px}
+body.trendora-store .tr-catalog-page .products-header{padding:22px 24px!important;margin-bottom:20px!important}
+body.trendora-store .tr-catalog-page .products-header>.d-flex{margin-bottom:0!important;gap:14px!important;flex-wrap:wrap!important}
+body.trendora-store .tr-catalog-page .products-header h2{color:#fff!important;line-height:1.15!important;overflow-wrap:normal!important;word-break:normal!important}
+body.trendora-store .tr-catalog-page .filter-sidebar{top:96px!important;padding:22px!important}
+body.trendora-store .tr-catalog-page .filter-sidebar .filter-title{color:#fff!important;border-bottom-color:var(--ac-line)!important}
+body.trendora-store .tr-catalog-page .filter-sidebar .filter-group label{color:#9eacbe!important;overflow-wrap:normal!important;word-break:normal!important}
+body.trendora-store .tr-catalog-page .filter-sidebar .filter-group label i{color:#718198!important}
+body.trendora-store .tr-catalog-page .filter-sidebar .form-check{display:flex!important;align-items:center!important;gap:8px!important;color:#aeb9c7!important}
+body.trendora-store .tr-catalog-page .filter-sidebar .form-check-input{flex:0 0 auto!important;margin:0!important}
+body.trendora-store .tr-catalog-page .price-input-group{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+body.trendora-store .tr-catalog-page .price-input-group .form-control{width:100%!important;min-width:0!important}
+body.trendora-store .tr-catalog-page .btn-reset{color:#9aa8ba!important;border-color:var(--ac-line)!important}
+body.trendora-store .tr-catalog-page .product-grid-card .info h5{color:#fff!important;line-height:1.35!important;margin-top:3px!important}
+body.trendora-store .tr-catalog-page .product-grid-card .btn-view{color:#d8c9ff!important;border-color:rgba(139,92,246,.28)!important;background:rgba(139,92,246,.06)!important}
+body.trendora-store .tr-catalog-page .product-grid-card .btn-view:hover{color:#fff!important;background:rgba(139,92,246,.13)!important;border-color:rgba(139,92,246,.45)!important}
+body.trendora-store .tr-catalog-page .empty-products h4{color:#fff!important}
+body.trendora-store .tr-catalog-page .empty-products p{color:#93a1b4!important}
+
+@media(max-width:991.98px){
+  body.trendora-store .tr-catalog-page{padding-top:18px!important}
+  body.trendora-store .tr-catalog-page .filter-sidebar{position:relative!important;top:auto!important;margin-bottom:4px!important}
+  body.trendora-store .tr-catalog-page .filter-sidebar form{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important;align-items:end!important}
+  body.trendora-store .tr-catalog-page .filter-sidebar .filter-group{margin:0!important;min-width:0!important}
+  body.trendora-store .tr-catalog-page .filter-sidebar .btn-filter,
+  body.trendora-store .tr-catalog-page .filter-sidebar .btn-reset{margin:0!important;min-height:46px!important;display:flex!important;align-items:center!important;justify-content:center!important}
+  body.trendora-store .tr-catalog-page .product-grid-card .image-wrap{height:230px!important;min-height:230px!important}
+}
+
+@media(max-width:575.98px){
+  body.trendora-store .tr-catalog-page{padding-top:12px!important}
+  body.trendora-store .tr-catalog-page .products-header{padding:18px 16px!important;border-radius:20px!important}
+  body.trendora-store .tr-catalog-page .products-header h2{font-size:clamp(24px,8vw,34px)!important}
+  body.trendora-store .tr-catalog-page .products-header .badge{font-size:12px!important;padding:8px 12px!important}
+  body.trendora-store .tr-catalog-page>.tr-shell>.row>[class*="col-"]{padding-left:0!important;padding-right:0!important}
+  body.trendora-store .tr-catalog-page .filter-sidebar{padding:18px!important;border-radius:20px!important}
+  body.trendora-store .tr-catalog-page .filter-sidebar form{grid-template-columns:1fr!important;gap:13px!important}
+  body.trendora-store .tr-catalog-page .price-input-group{grid-template-columns:1fr 1fr!important}
+  body.trendora-store .tr-catalog-page .product-grid-card .image-wrap{height:285px!important;min-height:285px!important}
+  body.trendora-store .tr-catalog-page .product-grid-card .info{padding:17px!important}
+  body.trendora-store .tr-catalog-page .product-grid-card{border-radius:20px!important}
+}
+
+/* Mobile catalogue controls + calmer storefront hero proportions. */
+body.trendora-store .catalog-filter-toggle{width:100%;min-height:50px;margin:0 0 10px;padding:0 16px;border:1px solid var(--ac-line);border-radius:16px;background:linear-gradient(135deg,rgba(139,92,246,.13),rgba(34,211,238,.045));color:#fff;font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:12px}
+body.trendora-store .catalog-filter-toggle[aria-expanded="true"]>i{transform:rotate(180deg)}
+body.trendora-store .catalog-filter-toggle>i{transition:transform .22s var(--ac-ease);color:#8ea0b6}
+@media(min-width:992px){body.trendora-store .catalog-filter-toggle{display:none!important}}
+
+@media(max-width:991.98px){
+  body.trendora-store .tr-home-hero{padding:34px 0 24px!important}
+  body.trendora-store .tr-hero-grid{gap:28px!important}
+  body.trendora-store .tr-hero-copy h1{font-size:clamp(3rem,9vw,4.8rem)!important;line-height:.98!important;letter-spacing:-.055em!important;max-width:760px!important}
+  body.trendora-store .tr-hero-copy>p{font-size:1.05rem!important;line-height:1.65!important}
+  body.trendora-store .tr-hero-stage{min-height:320px!important}
+}
+@media(max-width:575.98px){
+  body.trendora-store .tr-home-hero{padding:24px 0 18px!important}
+  body.trendora-store .tr-hero-copy h1{font-size:clamp(2.55rem,13vw,3.55rem)!important;line-height:1!important;letter-spacing:-.045em!important;margin:11px 0 14px!important}
+  body.trendora-store .tr-hero-copy>p{font-size:.98rem!important;line-height:1.6!important}
+  body.trendora-store .tr-hero-actions{margin-top:20px!important;gap:9px!important}
+  body.trendora-store .tr-hero-actions .btn{min-height:48px!important}
+  body.trendora-store .tr-trust-row{margin-top:19px!important;display:grid!important;grid-template-columns:1fr!important;gap:9px!important}
+  body.trendora-store .tr-hero-stage{min-height:280px!important}
+  body.trendora-store .tr-footer{margin-top:46px!important}
+  body.trendora-store .tr-footer-main{padding:38px 0 92px!important}
+}

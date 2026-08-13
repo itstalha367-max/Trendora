@@ -1,0 +1,9 @@
+@extends('layouts.app')
+@section('title',$blog->title.' — Trendora Journal')
+@section('content')
+<article class="tr-page"><div class="tr-shell"><header class="tr-article-head"><a class="tr-inline-link" href="{{ route('blogs.index') }}"><i class="fa-solid fa-arrow-left"></i> Journal</a><span class="tr-eyebrow mt-4">{{ $blog->category?->name ?? 'Trendora Journal' }} · {{ $blog->reading_time }}</span><h1>{{ $blog->title }}</h1><p>{{ $blog->excerpt }}</p><div class="tr-article-meta"><span><i class="fa-regular fa-calendar"></i> {{ $blog->published_at?->format('d M Y') ?? $blog->created_at->format('d M Y') }}</span><span><i class="fa-regular fa-eye"></i> {{ number_format($blog->views) }} views</span>@if($blog->user)<span><i class="fa-regular fa-user"></i> {{ $blog->user->name }}</span>@endif</div></header>
+@if($blog->featured_image)<div class="tr-article-cover"><img src="{{ asset('storage/'.$blog->featured_image) }}" alt="{{ $blog->title }}"></div>@endif
+<div class="tr-article-content tr-card">{!! $blog->content !!}</div>
+@if($related->isNotEmpty())<section class="mt-5"><div class="tr-home-heading"><div><span class="tr-eyebrow">Keep reading</span><h2>Related stories.</h2></div></div><div class="tr-journal-grid">@foreach($related as $item)<article class="tr-journal-card"><a class="tr-journal-media" href="{{ route('blogs.show',$item->slug) }}"><img src="{{ $item->featured_image ? asset('storage/'.$item->featured_image) : asset('images/no-image.png') }}" alt="{{ $item->title }}" loading="lazy"></a><div class="tr-journal-body"><span class="tr-eyebrow">{{ $item->reading_time }}</span><h3><a href="{{ route('blogs.show',$item->slug) }}">{{ $item->title }}</a></h3><p>{{ Str::limit(strip_tags($item->excerpt ?? $item->content),100) }}</p></div></article>@endforeach</div></section>@endif
+</div></article>
+@endsection

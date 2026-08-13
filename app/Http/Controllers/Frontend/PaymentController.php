@@ -1,0 +1,13 @@
+<?php
+namespace App\Http\Controllers\Frontend;
+use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\PaymentTransaction;
+use App\Notifications\CommerceNotification;
+use Illuminate\Http\Request;
+use RaftarPay\Facades\Payment;
+use App\Services\WebhookDispatcher;
+class PaymentController extends Controller {
+ public function pay($orderId,$gateway='jazzcash'){$order=Order::with('items')->findOrFail($orderId);if(auth()->check() && auth()->user()->role !== 'admin'){abort_unless($order->user_id===auth()->id(),403);}try{$response=Payment::gateway($gateway)->charge(['amount'=>$order->total*100,'reference'=>$order->order_number,'description'=>'Order #'.$order->order_number,'customer_email'=>$order->shipping_email,'customer_phone'=>$order->shipping_phone,'return_url'=>route('payment.callback')]);return $response->send();}catch(\Throwable $e){$order->transactions()->where('status','pending')->latest()->first()?->update(['status'=>'failed','note'=>$e->getMessage()]);return redirect()->route('orders.success',$orderId)->with('error','Payment failed: '.$e->getMessage());}}
+ public function callback(Request $request, WebhookDispatcher $webhooks){try{$response=Payment::gateway()->verify($request->all());$order=Order::where('order_number',$response->reference??null)->first();if($response->isSuccessful() && $order){$order->update(['payment_status'=>'paid','transaction_id'=>$response->transactionId,'payment_data'=>$request->all()]);$tx=$order->transactions()->where('status','pending')->latest()->first();($tx?$tx:$order->transactions()->make(['gateway'=>$order->payment_gateway,'type'=>'charge','amount'=>$order->total,'currency'=>\App\Models\Setting::get('currency','PKR')]))->fill(['transaction_id'=>$response->transactionId,'status'=>'succeeded','payload'=>$request->all()])->save();$order->user?->notify(new CommerceNotification('Payment received','Payment for '.$order->order_number.' was successful.',route('user.order.detail',$order->id),'fa-credit-card'));try{$webhooks->dispatch('order.updated',$order->fresh(['transactions']),['payment_status'=>'paid']);}catch(\Throwable $e){\Log::warning('Payment webhook failed: '.$e->getMessage());}return redirect()->route('orders.success',$order->id)->with('success','Payment successful! 🎉');}if($order)$order->transactions()->where('status','pending')->latest()->first()?->update(['status'=>'failed','payload'=>$request->all()]);return redirect()->route('checkout.index')->with('error','Payment failed. Please try again.');}catch(\Throwable $e){return redirect()->route('checkout.index')->with('error','Payment verification failed: '.$e->getMessage());}}
+}

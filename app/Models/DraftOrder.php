@@ -1,0 +1,5 @@
+<?php
+namespace App\Models;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+class DraftOrder extends Model { use HasFactory; protected $fillable=['draft_number','customer_id','customer_name','customer_email','customer_phone','shipping_address','shipping_city','shipping_state','shipping_zip','shipping_country','status','currency','subtotal','discount','tax','shipping','total','notes','expires_at','converted_order_id','created_by']; protected $casts=['subtotal'=>'decimal:2','discount'=>'decimal:2','tax'=>'decimal:2','shipping'=>'decimal:2','total'=>'decimal:2','expires_at'=>'datetime']; public function customer(){return $this->belongsTo(User::class,'customer_id');} public function items(){return $this->hasMany(DraftOrderItem::class);} public function convertedOrder(){return $this->belongsTo(Order::class,'converted_order_id');} public function creator(){return $this->belongsTo(User::class,'created_by');} public static function generateNumber(){return 'DRAFT-'.strtoupper(substr(uniqid(),-8));} }

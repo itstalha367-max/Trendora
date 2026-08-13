@@ -1,0 +1,3 @@
+@extends('layouts.app') @section('title','Page Not Found') @section('content')
+<section class="container py-5"><div class="tn-error-card"><div class="tn-error-code">404</div><span class="tn-kicker">Lost in the catalog?</span><h1>That page is no longer on the shelf.</h1><p>The address may have changed or the page may have been removed. Continue shopping from a safe starting point.</p><div class="d-flex gap-2 justify-content-center flex-wrap"><a href="{{ route('home') }}" class="btn btn-primary">Back home</a><a href="{{ route('products.index') }}" class="btn btn-outline-light">Browse products</a></div></div></section>
+@endsection
